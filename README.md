@@ -20,3 +20,8 @@ CrossLib has a GUI framework called CrossGUI. This is what we will be using to c
     int main() {
         return 0;
     }
+
+## Additional infomation about CrossLib
+
+### CrossGUI
+CrossGUI uses GTK (linux GUI framework) and the win32 api. Using these two it has compatibility for Linux and Windows.
