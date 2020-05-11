@@ -21,8 +21,10 @@ CrossLib has a GUI framework called CrossGUI. This is what we will be using to c
         return 0;
     }
 Compile for Windows using:
+
     x64g++ dummy command # to be replaced
 Compile for Linux:
+
     g++ dummy #to be replaced
 
 ## Additional infomation about CrossLib
