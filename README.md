@@ -47,14 +47,14 @@ Copy the `compile.sh` file from the the `cross_apis_r` folder and build using on
 
 Compile for Windows using:
 
-    ./compile.sh win32 64
+    bash compile.sh win32 64
 Compile for Linux:
 
-    ./compile.sh linux 64
+    bash compile.sh linux 64
 Run using
 
     ./out # for linux
-    wine windows-out.exe # for windows
+    wine windows-out.exe # test in WINE if installed
 
 ## Additional infomation about CrossLib
 
