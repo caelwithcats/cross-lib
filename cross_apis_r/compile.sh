@@ -1,6 +1,6 @@
 BUILDOSTARGET=$1
 BUILDARCHTARGET=$2
-mainfile=example.cpp
+mainfile=crossExample.cpp
 # Windows
 # 32-bit
 echo "  Main file: $mainfile"
