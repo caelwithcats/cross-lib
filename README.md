@@ -14,20 +14,49 @@ To import CrossLib into your C++ project add this line to your C++ file
 
     #include <cross.h>
 And that's it you now have CrossLib installed in your C++ project.
-CrossLib has a GUI framework called CrossGUI. This is what we will be using to create the hello world project. Create a new C++ file and add the following code to it:
+CrossLib has a GUI framework called CrossGUI. This is what we will be using to create the hello world project. Create a new C++ file called `crossExample.cpp` and add the following code to it:
 
-    #include <cross.h>
-    int main() {
-        return 0;
+```
+#include "cross.h"
+//#include "cross_gui.hpp"
+cross_gui myGui;
+void secWinSetup(){
+    myGui.cross_createButton(20,60,100,20,"Click this one too","button2","secWin");
+    myGui.cross_setWindowTitle("hi the title was changed","secWin");
+}
+void setupGUI(){
+    myGui.cross_createButton(20,60,100,20,"Click Me too!","button2","mui");
+    myGui.cross_changeButtonText("button","button text changed");
+    myGui.cross_createTextbox(20,130,100,20,"Label", "label1","mui");
+    myGui.cross_createCheckbox(20,90,100,32,"check me","check","mui");
+    myGui.cross_createSlider(20,150,200,30,"slider",true,50,100,"slider1","mui");
+    int msgBox = myGui.cross_messagebox("Welcome to crossLib!","Welcome",cross_gui::crossButton_OK,cross_gui::crossIcon_Info,"mui");
+    if(msgBox == cross_gui::crossMessageboxResult_OK){
+        printf("OK was pressed.\n");
+    }else if(msgBox == cross_gui::crossMessageboxResult_Cancel){
+        printf("CANCEL was pressed.\n");
     }
+}
+int main(){
+    // mui: my user interface
+    myGui.cross_createWindow(500,500,"Hello","mui");
+    return 0;
+}
+```
+
+Copy the `compile.sh` file from the the `cross_apis_r` folder and build using one of these commands
+
 Compile for Windows using:
 
-    x64g++ dummy command # to be replaced
+    ./compile.sh win32 64
 Compile for Linux:
 
-    g++ dummy #to be replaced
+    ./compile.sh linux 64
+Run using
+
+    ./out
 
 ## Additional infomation about CrossLib
 
 ### CrossGUI
-CrossGUI uses GTK (linux GUI framework) and the win32 api. Using these two it has compatibility for Linux and Windows.
+CrossGUI uses GTK3 (linux GUI framework) and the win32 api. Using these two it has compatibility for Linux and Windows.
