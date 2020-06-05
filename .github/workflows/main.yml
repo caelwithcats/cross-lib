@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: crossLib CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -24,10 +24,14 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Install packages
-      run: bash cross_apis_r/compile.sh
+      run: bash ./cross_apis_r/compile.sh
 
     # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
+    - name: Compiling test program for linux
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        echo Compiling for linux...,
+        bash ./cross_apis_r/compile.sh linux 64
+    - name: Compiling test program for linux
+      run: |
+        echo Compiling for windows...,
+        bash ./cross_apis_r/compile.sh win32 64
