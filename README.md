@@ -58,4 +58,12 @@ Run using
 ## Additional infomation about CrossLib
 
 ### CrossGUI
-CrossGUI uses GTK3 (linux GUI framework) and the win32 api. Using these two it has compatibility for Linux and Windows.
+CrossGUI provides tools and functions to create cross platform Graphical User Interfaces (or GUIs). CrossGUI uses GTK3 (native linux GUI framework) and the win32 api. Using these two it has compatibility for Linux and Windows.
+
+### CrossStd
+CrossStd is a general purpose libary that provides tools and features that work cross platform. 
+
+----------------
+## To-do
+
+- Add a reliable input system. Senses mouse clicks, hover events,etc
