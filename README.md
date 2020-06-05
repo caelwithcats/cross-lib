@@ -21,7 +21,7 @@ CrossLib has a GUI framework called CrossGUI. This is what we will be using to c
 cross_gui myGui;
 void secWinSetup(){
     myGui.cross_createButton(20,60,100,20,"Click this one too","button2","secWin");
-    myGui.cross_setWindowTitle("hi the title was changed","secWin");
+    myGui.cross_setWindowTitle("Change the title here","secWin");
 }
 void setupGUI(){
     myGui.cross_createButton(20,60,100,20,"Click Me too!","button2","mui");
