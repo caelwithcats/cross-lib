@@ -53,7 +53,8 @@ Compile for Linux:
     ./compile.sh linux 64
 Run using
 
-    ./out
+    ./out # for linux
+    wine windows-out.exe # for windows
 
 ## Additional infomation about CrossLib
 
