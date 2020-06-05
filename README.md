@@ -9,7 +9,7 @@ To install CrossLib, you will need to install the dependencies
 Clone the CrossLib repository by typing in your terminal
 
     git clone https://github.com/caelwithcats/cross-lib.git
-Copy the the `cross.h` and `cross-features.h` files into project. 
+Copy the the `cross.h` and `cross-features.h` files from the `cross_apis_r` folder into project. 
 To import CrossLib into your C++ project add this line to your C++ file
 
     #include <cross.h>
