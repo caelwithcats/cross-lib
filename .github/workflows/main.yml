@@ -29,5 +29,7 @@ jobs:
       run: |
         echo Compiling for windows...,
         bash ./cross_apis_r/compile.sh win32 64 --actions-build
+    - name: Compiling test program for windows x32 
+      run: |
         echo Compiling for windows x32...
         bash ./cross_apis_r/compile.sh win32 32 --actions-build
