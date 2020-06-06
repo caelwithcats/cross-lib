@@ -61,62 +61,8 @@ public:
     }
 
 };
-/*
-int LetterStringToAsciiInt(std::string s){
-    char x[s.length()];
-    int intArray[s.length() * 3];
-    for (unsigned int i = 0; i < s.length(); i++)
-    {
-        intArray[i] = (int)s[i];
-    }
-    int* xStr = intArray;
-    //std::cout << xStr << std::endl;
-    return (int)*xStr;
-    //return std::stoi(xStr);
-}
-std::string decyptAsciiIntLetterToString(int letter){
-    char decypted = (char)letter;
-    return std::string( decypted );
-}
-int* StringToAsciiIntergers(std::string s){
-    int *x = new int[s.length()];
-    for(int i = 0; i < s.length(); i++){
-        char* chr = &s.at(i);
-        // Try this if you want to skip every second character
-        //chr[i+1] = NULL;
-        x[i] = LetterStringToAsciiInt(std::string(chr));
-    }
-    
-    for(int itm = 0; itm < s.length(); itm++){
-    std::cout << x[itm] << " = " << decyptAsciiIntLetterToString(x[itm]) << std::endl;
-    }
-
-    return x;
-    delete x;
-}
-std::string decyptAsciiIntToString(int* input, int size){
-    char* x = new char[size];
-    for(int i = 0; i < size; i++){
-        x[i] = (char)decyptAsciiIntLetterToString(input[i]).c_str();
-    }
-    std::string stdstrvalue;
-    stdstrvalue = x;
-    delete x;
-    return stdstrvalue;
-}
 
 
-int CombineIntArray(int *array, int size){
-    int r = 0;
-    //int arr[size] = &array;
-    //std::cout << "\n" << array[3] << "\n";
-    for(int i = 0; i < size;i++){
-        //std::cout << std::stoi(std::to_string(r) + std::to_string(array[i])) << "," << std::endl;
-        r = std::stoi(std::to_string(r) + std::to_string(array[i]));
-    }
-    std::cout << "r = "  << r << std::endl;
-    return r;
-}*/
 struct crossEvent
 {
     std::string typeOfEvent;
@@ -313,7 +259,6 @@ private:
 #if IsWIN
     typedef HWND cross_window_type;
     typedef HWND cross_control_type;
-    //Window* win_window = nullptr;
 #endif
 
 #if IsLINUX
@@ -788,6 +733,29 @@ crossStd::point3d getWindowPosition(std::string windowName){
     return resultValue;
     #endif
 }
+crossStd::point2d getControlPosition(std::string controlName){
+    #if IsWIN
+    std::pair<cross_control_type,int> &controlVals = controls[controlName];
+
+    RECT rectangle;
+    GetWindowRect(controlVals.first, &rectangle);
+    crossStd::point2d resultValue;
+    resultValue.x = rectangle.left;
+    resultValue.y = rectangle.top;
+    return resultValue;
+    #endif
+    #if IsLINUX    
+    int controlX,controlY;
+    g_object_get_property(G_OBJECT(controls[controlName]),"x", &controlX);
+    g_object_get_property(G_OBJECT(controls[controlName]),"y", &controlY);
+    gtk_widget_get_position(GTK_WINDOW(windowVals.first),&windowX,&windowY);
+    crossStd::point3d resultValue;
+    resultValue.x = windowX;
+    resultValue.y = windowY;
+
+    return resultValue;
+    #endif
+}
 int getWindowWidth(std::string windowName){
     #if IsWIN
     RECT rectangle;
@@ -849,7 +817,7 @@ int getControlWidth(std::string controlName){
         return width;
     }else{
         #if CROSS_FEATURES_DEBUG
-        std::cout << "ERROR: Could not get the height of \"" << controlName << "\"" << std::endl;
+        std::cout << "ERROR: Could not get the width of \"" << controlName << "\"" << std::endl;
         return -1;
         #endif
     }
@@ -875,6 +843,7 @@ bool isWindowFocused(std::string windowName){
     }
     #endif
     #if IsLINUX
+    // FIXME: This code may look correct but it always returns 0
     std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
     gboolean result = gtk_widget_is_focus(windowVals.first);
     if(result){
@@ -905,6 +874,20 @@ crossStd::point2d getCursorPositionOnMonitor(){
     return newPoint;
     #endif
 }
+bool isMouseInBoundsOfWindow(std::string windowName){
+    crossStd::point2d CursorPos = getCursorPositionOnMonitor();
+    crossStd::point3d WinPos = getWindowPosition(windowName);
+    int winHeight = getWindowHeight(windowName);
+    int winWidth = getWindowWidth(windowName);
+    crossStd::point2d MousePosWinRelative;
+    MousePosWinRelative.x = CursorPos.x - WinPos.x;
+    MousePosWinRelative.y = CursorPos.x - WinPos.x;
+    if(MousePosWinRelative.x >= 0 || MousePosWinRelative.y >= 0){
+        return true;
+    }else{
+        return false;
+    }
+}
 int cross_createWindow(int width,int height, std::string title, std::string createWindowName){
         #if IsWIN
         srand(time(0));
@@ -933,16 +916,33 @@ int cross_createWindow(int width,int height, std::string title, std::string crea
             //std::pair<cross_control_type,int> &controlVals = controls[controlName];
             std::map<std::string, std::pair<cross_control_type, int>>::iterator it = controls.begin();
             while(it != controls.end()){
-                currentmsg = it->second.second;
-                //std::pair<cross_control_type,int> &itVals = controls[it->first];
-            if(message != 0){
-            std::cout << message << " : " << currentmsg << std::endl;
-            }
-            if(currentmsg == message && message != 0){
-                std::string itemString = it->first;
-                std::cout << "event from " << itemString << " with the ID: " << currentmsg << std::endl;
-            }
-            it++;
+                crossStd::point2d CursorPos = getCursorPositionOnMonitor();
+                crossStd::point3d WinPos = getWindowPosition(createWindowName);
+                int winHeight = getWindowHeight(createWindowName);
+                int winWidth = getWindowWidth(createWindowName);
+                crossStd::point2d MousePosWinRelative;
+                MousePosWinRelative.x = CursorPos.x - WinPos.x;
+                MousePosWinRelative.y = CursorPos.x - WinPos.x;
+                //std::cout << "MousePosWinRelative.x = " << MousePosWinRelative.x << " & MousePosWinRelative.y = " << MousePosWinRelative.y << " & id = " << it->first << std::endl;
+                if(MousePosWinRelative.x >= 0 || MousePosWinRelative.y >= 0){
+                    crossStd::point2d controlPosition = getControlPosition(it->first);
+                    int controlWidth = getControlWidth(it->first);
+                    int controlHeight = getControlHeight(it->first);
+                    if(MousePosWinRelative.x <= controlPosition.x && MousePosWinRelative.x <= controlWidth){
+                        //if(controlPosition.y <= MousePosWinRelative.y && MousePosWinRelative.y <= controlHeight){
+                            // Hover event has occured
+                            crossStd::crossEvent event;
+                            event.from = it->first;
+                            event.typeOfEvent = "hover";
+                            if(cross_repeatcode != nullptr){
+                            cross_repeatcode(event);
+                            }
+                            //break;
+                        //}
+                    }
+                    
+                }
+                it++;
             }
         }
 
