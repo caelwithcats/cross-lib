@@ -24,7 +24,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Install packages
-      run: bash ./cross_apis_r/compile.sh true
+      run: bash ./cross_apis_r/packages.sh true
 
     # Runs a set of commands using the runners shell
     - name: Compiling test program for linux
