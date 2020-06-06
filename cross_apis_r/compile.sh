@@ -1,6 +1,12 @@
 BUILDOSTARGET=$1
 BUILDARCHTARGET=$2
-mainfile=crossExample.cpp
+firstFlag=$3
+if [ $firstFlag == "--actions-build" ]
+then
+    mainfile=./cross_apis_r/crossExample.cpp
+else
+    mainfile=crossExample.cpp
+fi
 # Windows
 # 32-bit
 echo "  Main file: $mainfile"
