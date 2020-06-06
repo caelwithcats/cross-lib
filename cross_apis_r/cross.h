@@ -748,7 +748,6 @@ crossStd::point2d getControlPosition(std::string controlName){
     int controlX,controlY;
     g_object_get_property(G_OBJECT(controls[controlName]),"x", &controlX);
     g_object_get_property(G_OBJECT(controls[controlName]),"y", &controlY);
-    gtk_widget_get_position(GTK_WINDOW(windowVals.first),&windowX,&windowY);
     crossStd::point3d resultValue;
     resultValue.x = windowX;
     resultValue.y = windowY;
