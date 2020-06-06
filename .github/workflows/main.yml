@@ -30,8 +30,8 @@ jobs:
     - name: Compiling test program for linux
       run: |
         echo Compiling for linux...,
-        bash ./cross_apis_r/compile.sh linux 64
+        bash ./cross_apis_r/compile.sh linux 64 --actions-build
     - name: Compiling test program for linux
       run: |
         echo Compiling for windows...,
-        bash ./cross_apis_r/compile.sh win32 64
+        bash ./cross_apis_r/compile.sh win32 64 --actions-build
