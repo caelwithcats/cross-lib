@@ -66,4 +66,4 @@ CrossStd is a general purpose libary that provides tools and features that work 
 ----------------
 ## To-do
 
-- Add a reliable input system. Senses mouse clicks, hover events,etc
+* [ ] Add a reliable input system. Senses mouse clicks, hover events,etc
