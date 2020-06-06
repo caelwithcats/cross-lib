@@ -745,12 +745,12 @@ crossStd::point2d getControlPosition(std::string controlName){
     return resultValue;
     #endif
     #if IsLINUX    
-    int controlX,controlY;
+    GValue controlX = G_VALUE_INIT,controlY = G_VALUE_INIT;
     g_object_get_property(G_OBJECT(controls[controlName]),"x", &controlX);
     g_object_get_property(G_OBJECT(controls[controlName]),"y", &controlY);
-    crossStd::point3d resultValue;
-    resultValue.x = windowX;
-    resultValue.y = windowY;
+    crossStd::point2d resultValue;
+    resultValue.x = g_value_get_int(&controlX);
+    resultValue.y = g_value_get_int(&controlY);
 
     return resultValue;
     #endif
