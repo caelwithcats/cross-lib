@@ -2,7 +2,7 @@ actionsBuild=$1
 # The following packages are required for crossLib:
 if [ $actionsBuild == "true" ]
 then
-  sudo apt-get -y install mingw-w64 g++ gcc build-essential libx11-dev
+  sudo apt-get -y install libgtk-3-dev mingw-w64 g++ gcc build-essential libx11-dev
 else
   sudo apt-get install mingw-w64 g++ gcc build-essential libx11-dev
 fi
