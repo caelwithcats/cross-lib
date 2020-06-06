@@ -51,5 +51,3 @@ if [ $BUILDOSTARGET == "linux" ]
 then
     g++ -std=c++17 -m64 -o out $mainfile -lX11 `pkg-config --cflags gtk+-3.0` `pkg-config --libs gtk+-3.0`
 fi
-# g++ -std=c++17 -m64 -o out-withoutCross without-cross.cpp -lX11 `pkg-config --cflags gtk+-3.0` `pkg-config --libs gtk+-3.0`
-# ./out-withoutCross
