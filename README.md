@@ -15,7 +15,7 @@ git clone https://github.com/caelwithcats/cross-lib.git
 A newly created folder called `cross-lib` should be created
 
 Copy the the `cross.h` and `cross-features.h` files from the `cross_apis_r` folder into project. 
-To import CrossLib into your C++ project add this line to your C++ file
+To import CrossLib into your existing C++ project add this line to your C++ file
 
 ```c++
 #include <cross.h>
