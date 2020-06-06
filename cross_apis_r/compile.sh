@@ -35,7 +35,8 @@ then
     fi
 fi
 # 0-bit
-moo
+#moo
+
 # linux
 # 32-bit, might not work yet
 # g++ -m32 -o out example.cpp -lX11 `pkg-config --cflags gtk+-3.0` `pkg-config --libs gtk+-3.0`
