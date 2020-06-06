@@ -18,7 +18,7 @@ then
 else
   read -p "Would you like to  install wine? Continue (y/n)?" choice
   case "$choice" in 
-    y|Y ) echo Updating...; sudo apt update; echo "You should now be able to install WINE from the software centre (mintinstall if you are using linux mint)" 
+    y|Y ) echo Updating...; sudo apt update; echo "You should now be able to install WINE from the software centre (mintinstall if you are using linux mint)";; 
     n|N ) echo "no";;
     * ) echo "invalid answer";;
   esac
