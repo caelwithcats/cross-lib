@@ -2,31 +2,25 @@
 
 name: crossLib CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches:
     - master
     - release/*
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow downloads dependencies and compiles the test application
   test:
     name: crossLib CI
-    # The type of runner that the job will run on
     runs-on: ubuntu-18.04
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
     - uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
+    # Installs the necessary dependencies 
     - name: Install packages
       run: bash ./cross_apis_r/packages.sh true
 
-    # Runs a set of commands using the runners shell
+    # Start compiling test program in multiple configurations
     - name: Compiling test program for linux
       run: |
         echo Compiling for linux...,
@@ -35,3 +29,5 @@ jobs:
       run: |
         echo Compiling for windows...,
         bash ./cross_apis_r/compile.sh win32 64 --actions-build
+        echo Compiling for windows x32...
+        bash ./cross_apis_r/compile.sh win32 32 --actions-build
