@@ -4,19 +4,24 @@ CrossLib is a C++ API specificly made for compiling using a cross compiler. This
 The source code for CrossLib can be found in `src/cross.h`.
 To install CrossLib, you will need to install the dependencies
 
-    sudo apt-get -y install libgtk-3-dev mingw-w64 g++ gcc build-essential libx11-dev
+```shell-script
+sudo apt-get -y install libgtk-3-dev mingw-w64 g++ gcc build-essential libx11-dev
+```
 ## Creating your first graphical application
 Clone the CrossLib repository by typing in your terminal
-
-    git clone https://github.com/caelwithcats/cross-lib.git
+```shell-script
+git clone https://github.com/caelwithcats/cross-lib.git
+```
 Copy the the `cross.h` and `cross-features.h` files from the `cross_apis_r` folder into project. 
 To import CrossLib into your C++ project add this line to your C++ file
 
-    #include <cross.h>
+```c++
+#include <cross.h>
+```
 And that's it you now have CrossLib installed in your C++ project.
 CrossLib has a GUI framework called CrossGUI. This is what we will be using to create the hello world project. Create a new C++ file called `crossExample.cpp` and add the following code to it:
 
-```
+```c++
 #include "cross.h"
 cross_gui myGui;
 
@@ -52,9 +57,10 @@ Compile for Linux:
     bash compile.sh linux 64
 Run using
 
-    ./out # for linux
-    wine windows-out.exe # test in WINE if installed
-
+```shell-script
+./out # for linux
+wine windows-out.exe # test in WINE if installed
+```
 ## Additional infomation about CrossLib
 
 ### CrossGUI
