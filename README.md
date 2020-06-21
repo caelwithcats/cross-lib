@@ -66,6 +66,8 @@ wine windows-out.exe # test in WINE if installed
 ```
 ## Additional infomation about CrossLib
 
+### Cross Features
+Cross-features is a part of crossLib that allows you to specify what features of crossLib you want compiled into your program. You can find this in the `cross_features.h` file.
 ### CrossGUI
 CrossGUI provides tools and functions to create cross platform Graphical User Interfaces (or GUIs). CrossGUI uses GTK3 (native linux GUI framework) and the win32 api. Using these two it has compatibility for Linux and Windows.
 
