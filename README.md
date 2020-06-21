@@ -11,6 +11,7 @@ sudo apt-get -y install libgtk-3-dev mingw-w64 g++ gcc build-essential libx11-de
 Clone the CrossLib repository by typing in your terminal
 ```shell-script
 git clone https://github.com/caelwithcats/cross-lib.git
+cd cross-lib/cross_apis_r
 ```
 A newly created folder called `cross-lib` should be created
 
