@@ -439,7 +439,7 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
             }else{
                 hostWindow = windowVals.first;
             }
-            dialogue =  gtk_message_dialog_new(GTK_WINDOW(hostWindow), GTK_DIALOG_DESTROY_WITH_PARENT,dialogIcon,GTK_BUTTONS_NONE,message.c_str(),NULL,g_strerror(errno));
+            dialogue =  gtk_message_dialog_new(GTK_WINDOW(hostWindow), GTK_DIALOG_DESTROY_WITH_PARENT,dialogueIcon,GTK_BUTTONS_NONE,message.c_str(),NULL,g_strerror(errno));
             if(buttons == crossButton_AbortRetryIgnore){
                 gtk_dialog_add_button(GTK_DIALOG(dialogue), "Abort",GTK_RESPONSE_NO);
                 gtk_dialog_add_button(GTK_DIALOG(dialogue), "Retry",GTK_RESPONSE_YES);
