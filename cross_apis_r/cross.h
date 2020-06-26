@@ -420,7 +420,7 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
         #if IsLINUX
             std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
             GtkWidget *dialogue;
-            GtkMessageType dialogIcon = GTK_MESSAGE_OTHER;
+            GtkMessageType dialogueIcon = GTK_MESSAGE_OTHER;
             if(icon == crossIcon_Error){
                 dialogueIcon = GTK_MESSAGE_ERROR;
             }
