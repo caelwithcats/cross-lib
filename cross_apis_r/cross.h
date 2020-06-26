@@ -341,43 +341,43 @@ std::string cross_openfiledialog(std::string title,std::string filter,std::strin
 
 int cross_messagebox(std::string message, std::string title,CrossMessageBoxButtons buttons,CrossMessageBoxIcons icon, std::string windowName = ""){
         #if IsWIN
-            long int dialogIcon = NULL;
-            long int dialogButtons = NULL;
+            long int dialogueIcon = NULL;
+            long int dialogueButtons = NULL;
             if(icon == crossIcon_Error){
-                dialogIcon = MB_ICONERROR;
+                dialogueIcon = MB_ICONERROR;
             }
             if(icon == crossIcon_Info){
-                dialogIcon = MB_ICONINFORMATION;
+                dialogueIcon = MB_ICONINFORMATION;
             }
             if(icon == crossIcon_Warning){
-                dialogIcon = MB_ICONWARNING;
+                dialogueIcon = MB_ICONWARNING;
             }
             if(icon == crossIcon_Question){
-                dialogIcon = MB_ICONQUESTION;
+                dialogueIcon = MB_ICONQUESTION;
             }
             if(buttons == crossButton_AbortRetryIgnore){
-                dialogButtons = MB_ABORTRETRYIGNORE;
+                dialogueButtons = MB_ABORTRETRYIGNORE;
             }
             if(buttons == crossButton_OK){
-                dialogButtons = MB_OK;
+                dialogueButtons = MB_OK;
             }
             if(buttons == crossButton_OKCancel){
-                dialogButtons = MB_OKCANCEL;
+                dialogueButtons = MB_OKCANCEL;
             }
             if(buttons == crossButton_RetryCancel){
-                dialogButtons = MB_RETRYCANCEL;
+                dialogueButtons = MB_RETRYCANCEL;
             }
             if(buttons == crossButton_YesNo){
-                dialogButtons = MB_YESNO;
+                dialogueButtons = MB_YESNO;
             }
             if(buttons == crossButton_YesNoCancel){
-                dialogButtons = MB_YESNOCANCEL;
+                dialogueButtons = MB_YESNOCANCEL;
             }
             if(buttons == crossButton_CancelRetryContinue){
-                dialogButtons = MB_CANCELTRYCONTINUE;
+                dialogueButtons = MB_CANCELTRYCONTINUE;
             }
             if(buttons == crossButton_Help){
-                dialogButtons = MB_HELP;
+                dialogueButtons = MB_HELP;
             }
             if(buttons == crossButton_NoButtons){
             }
@@ -387,7 +387,7 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
             }else{
                 dependentOnMainWindow = true;
             }
-            int ret = MessageBox((dependentOnMainWindow ? windows[windowName] : NULL),message.c_str(),title.c_str(),dialogButtons | dialogIcon);
+            int ret = MessageBox((dependentOnMainWindow ? windows[windowName] : NULL),message.c_str(),title.c_str(),dialogueButtons | dialogueIcon);
             switch (ret)
             {
             case IDYES:
@@ -419,19 +419,19 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
         #endif
         #if IsLINUX
             std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
-            GtkWidget *dialog;
+            GtkWidget *dialogue;
             GtkMessageType dialogIcon = GTK_MESSAGE_OTHER;
             if(icon == crossIcon_Error){
-                dialogIcon = GTK_MESSAGE_ERROR;
+                dialogueIcon = GTK_MESSAGE_ERROR;
             }
             if(icon == crossIcon_Info){
-                dialogIcon = GTK_MESSAGE_INFO;
+                dialogueIcon = GTK_MESSAGE_INFO;
             }
             if(icon == crossIcon_Warning){
-                dialogIcon = GTK_MESSAGE_WARNING;
+                dialogueIcon = GTK_MESSAGE_WARNING;
             }
             if(icon == crossIcon_Question){
-                dialogIcon = GTK_MESSAGE_QUESTION;
+                dialogueIcon = GTK_MESSAGE_QUESTION;
             }
             GtkWidget *hostWindow;
             if(windowName == ""){
@@ -439,47 +439,47 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
             }else{
                 hostWindow = windowVals.first;
             }
-            dialog =  gtk_message_dialog_new(GTK_WINDOW(hostWindow), GTK_DIALOG_DESTROY_WITH_PARENT,dialogIcon,GTK_BUTTONS_NONE,message.c_str(),NULL,g_strerror(errno));
+            dialogue =  gtk_message_dialog_new(GTK_WINDOW(hostWindow), GTK_DIALOG_DESTROY_WITH_PARENT,dialogIcon,GTK_BUTTONS_NONE,message.c_str(),NULL,g_strerror(errno));
             if(buttons == crossButton_AbortRetryIgnore){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Abort",GTK_RESPONSE_NO);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Retry",GTK_RESPONSE_YES);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Ignore",GTK_RESPONSE_OK);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Abort",GTK_RESPONSE_NO);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Retry",GTK_RESPONSE_YES);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Ignore",GTK_RESPONSE_OK);
             }
             if(buttons == crossButton_OK){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "OK",GTK_RESPONSE_OK);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "OK",GTK_RESPONSE_OK);
             }
             if(buttons == crossButton_OKCancel){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "OK",GTK_RESPONSE_OK);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Cancel",GTK_RESPONSE_CANCEL);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "OK",GTK_RESPONSE_OK);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Cancel",GTK_RESPONSE_CANCEL);
             }
             if(buttons == crossButton_RetryCancel){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Retry",GTK_RESPONSE_APPLY);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Cancel",GTK_RESPONSE_CANCEL);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Retry",GTK_RESPONSE_APPLY);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Cancel",GTK_RESPONSE_CANCEL);
             }
             if(buttons == crossButton_YesNo){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Yes",GTK_RESPONSE_YES);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "No",GTK_RESPONSE_NO);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Yes",GTK_RESPONSE_YES);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "No",GTK_RESPONSE_NO);
             }
             if(buttons == crossButton_YesNoCancel){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Yes",GTK_RESPONSE_YES);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "No",GTK_RESPONSE_NO);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Cancel",GTK_RESPONSE_CANCEL);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Yes",GTK_RESPONSE_YES);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "No",GTK_RESPONSE_NO);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Cancel",GTK_RESPONSE_CANCEL);
             }
             if(buttons == crossButton_CancelRetryContinue){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Cancel",GTK_RESPONSE_CANCEL);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Retry",GTK_RESPONSE_APPLY);
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Continue",GTK_RESPONSE_YES);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Cancel",GTK_RESPONSE_CANCEL);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Retry",GTK_RESPONSE_APPLY);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Continue",GTK_RESPONSE_YES);
             }
             if(buttons == crossButton_Help){
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "Help",0);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "Help",0);
             }
             if(buttons == crossButton_NoButtons){
                 // A button must be added because Windows doesn't allow no buttons
-                gtk_dialog_add_button(GTK_DIALOG(dialog), "OK",0);
+                gtk_dialog_add_button(GTK_DIALOG(dialogue), "OK",0);
             }
-            gtk_window_set_title(GTK_WINDOW(dialog),title.c_str());
-            gint ret = gtk_dialog_run(GTK_DIALOG(dialog));
-            gtk_widget_destroy(GTK_WIDGET(dialog));
+            gtk_window_set_title(GTK_WINDOW(dialogue),title.c_str());
+            gint ret = gtk_dialog_run(GTK_DIALOG(dialogue));
+            gtk_widget_destroy(GTK_WIDGET(dialogue));
             if(ret == GTK_RESPONSE_CLOSE){
                     return crossMessageboxResult_Cancel;
             }
