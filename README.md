@@ -74,6 +74,9 @@ CrossGUI provides tools and functions to create cross platform Graphical User In
 ### CrossStd
 CrossStd is a general purpose libary that provides tools and features that work cross platform. 
 
+### What about macOS?
+macOS support will come later, right now you can cross compile your code for windows and compile for linux on linux
+
 ----------------
 ## To-do
 
