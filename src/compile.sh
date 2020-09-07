@@ -3,7 +3,7 @@ BUILDARCHTARGET=$2
 firstFlag=$3
 if [ $firstFlag == "--actions-build" ]
 then
-    mainfile=./cross_apis_r/example.cpp
+    mainfile=./src/example.cpp
 else
     mainfile=crossExample.cpp
 fi
