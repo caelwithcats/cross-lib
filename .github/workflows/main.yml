@@ -18,18 +18,18 @@ jobs:
 
     # Installs the necessary dependencies 
     - name: Install packages
-      run: bash ./cross_apis_r/packages.sh true
+      run: bash ./src/packages.sh true
 
     # Start compiling test program in multiple configurations
     - name: Compiling test program for linux
       run: |
-        echo Compiling for linux...,
-        bash ./cross_apis_r/compile.sh linux 64 --actions-build
+        echo Compiling for Linux...,
+        bash ./src/compile.sh linux 64 --actions-build
     - name: Compiling test program for windows
       run: |
-        echo Compiling for windows...,
-        bash ./cross_apis_r/compile.sh win32 64 --actions-build
+        echo Compiling for Windows...,
+        bash ./src/compile.sh win32 64 --actions-build
     - name: Compiling test program for windows x32 
       run: |
-        echo Compiling for windows x32...
-        bash ./cross_apis_r/compile.sh win32 32 --actions-build
+        echo Compiling for Windows x32...
+        bash ./src/compile.sh win32 32 --actions-build

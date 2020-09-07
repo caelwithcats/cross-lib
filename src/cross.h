@@ -1,6 +1,6 @@
 //#pragma once
 
-#ifdef __MINGW32__ || _WIN32
+#if defined(__MINGW32__) || defined(_WIN32)
     #include <windows.h>
     #include <string.h>
     #include <tchar.h>
@@ -17,6 +17,7 @@
 #include "cross_features.h"
 #include <cstddef>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,11 +73,14 @@ struct crossEvent
 struct executable_info{
     std::string getExeName(){
         #if IsWIN
-            char szExeFileName[MAX_PATH]; 
-            GetModuleFileName(NULL, szExeFileName, MAX_PATH);
-            return szExeFileName;
+            char exeFileName[MAX_PATH];
+            GetModuleFileName(NULL,  exeFileName, MAX_PATH);
+            return std::string(exeFileName);
         #endif
         #if IsLINUX
+			std::string execFilename;
+			std::ifstream("/proc/self/comm") >> execFilename;
+    		return execFilename;
         #endif
     }
 };
@@ -235,7 +239,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args,int ncmdshow
     winMain_returnValue = 0;
     return winMain_returnValue;
 }
-LRESULT CALLBACK WindowProc(HWND hWnd,UINT msg,WPARAM wp,LPARAM lp){
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp){
     win_hWnd = hWnd;
     win_wp = wp;
     switch (msg)
@@ -245,11 +249,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT msg,WPARAM wp,LPARAM lp){
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
-    
+
     default:
         return DefWindowProcW(hWnd,msg,wp,lp);
         break;
     }
+
+	return DefWindowProc(hWnd, msg, wp, lp);
 }
 #endif
 
@@ -322,7 +328,7 @@ std::map<std::string, std::pair<cross_window_type,cross_control_type>> windows;
 #endif
 
 
-std::string cross_openfiledialog(std::string title,std::string filter,std::string windowName){
+std::string cross_openfiledialogue(std::string title,std::string filter,std::string windowName){
 /*    #ifdef _WIN32
         OPENFILENAME openFileName;
 
@@ -336,13 +342,16 @@ std::string cross_openfiledialog(std::string title,std::string filter,std::strin
         openFileName.lpstrFilter = // implement a universial non-OS-specific file filter
     #endif
     */
+
+	throw "cross_openfiledialogue not implemented yet";
+	return "";
 }
 
 
 int cross_messagebox(std::string message, std::string title,CrossMessageBoxButtons buttons,CrossMessageBoxIcons icon, std::string windowName = ""){
         #if IsWIN
-            long int dialogueIcon = NULL;
-            long int dialogueButtons = NULL;
+            long int dialogueIcon = 0;
+            long int dialogueButtons = 0;
             if(icon == crossIcon_Error){
                 dialogueIcon = MB_ICONERROR;
             }
@@ -415,6 +424,9 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
             case IDABORT:
                 return crossMessageboxResult_Abort;
                 break;
+			default:
+				return crossMessageboxResult_Cancel;
+				break;
             }
         #endif
         #if IsLINUX
@@ -542,27 +554,11 @@ int cross_messagebox(std::string message, std::string title,CrossMessageBoxButto
                 }
             }
 
+		return crossMessageboxResult_Cancel;
+
         #endif
 }
-std::string getControlType(std::string controlName){
-    #if IsWIN
-    std::pair<cross_control_type,int> &controlVals = controls[controlName];
-    TCHAR className[128];
-    GetClassName(controlVals.first,className,128);
-    std::cout << className << std::endl;
-    LONG controlStyles = GetWindowLong(controlVals.first, GWL_STYLE);
-    if(className == "Button"){
-        return "button";
-    }if(className == "msctls_trackbar32"){
-        return "slider";
-    }if(className == "Edit"){
-        return "textbox";
-    }if(className == "Static"){
-        return "label";
-    }
-    return "unknown";
-    #endif
-}
+
 void cross_changeButtonText(std::string control, std::string text){
         #if IsLINUX
             gtk_button_set_label(GTK_BUTTON(controls[control]), text.c_str());
@@ -579,19 +575,8 @@ void cross_createButton(int x, int y, int width, int height, std::string text, s
     #if IsWIN
         std::pair<cross_control_type,int> &controlVals = controls[controlName];
         std::map<std::string, std::pair<cross_control_type, int>>::iterator it = controls.begin();
-        int id;
         crossStd::randomClass randGenerator;
-        id = randGenerator.EasyRandomNumberGenerator(1, RAND_MAX);
-        while(it != controls.end()){
-            std::pair<cross_control_type,int> &itVals = controls[it->first];
-            if(itVals.second == id){
-                //std::cout << "the id is the same as one of another value! changing..." << std::endl;
-                id = randGenerator.EasyRandomNumberGenerator(1, RAND_MAX);
-            }
-            it++;
-        }
-        std::cout << "btn id: " << id << std::endl;
-        controlVals.first = CreateWindowW(L"button",std::wstring(text.begin(), text.end()).c_str(),WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, x, y,width,height,windows[windowName],(HMENU)id,NULL,NULL);
+        controlVals.first = CreateWindowW(L"button", std::wstring(text.begin(), text.end()).c_str(), WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, x, y, width, height, windows[windowName], NULL, NULL, NULL);
     #endif
     #if IsLINUX
         std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
@@ -864,8 +849,8 @@ crossStd::point2d getCursorPositionOnMonitor(){
     #if IsLINUX
     int yPos,xPos;
     GdkDisplay *display = gdk_display_get_default ();
-    GdkDeviceManager *device_manager = gdk_display_get_device_manager (display);
-    GdkDevice *device = gdk_device_manager_get_client_pointer (device_manager);
+    GdkSeat *seat = gdk_display_get_default_seat(display);
+    GdkDevice *device = gdk_seat_get_pointer(seat);
     gdk_device_get_position (device, NULL, &xPos, &yPos);
     crossStd::point2d newPoint;
     newPoint.x = xPos;
@@ -907,7 +892,7 @@ int cross_createWindow(int width,int height, std::string title, std::string crea
         MSG msg = {0};
         cross_setupcode();
 
-        while(GetMessage(&msg,NULL,NULL,NULL)){
+        while(GetMessage(&msg, NULL, WM_INPUT, WM_INPUT)){
             TranslateMessage(&msg);
             DispatchMessage(&msg);
             int message = win_wp;
@@ -946,6 +931,7 @@ int cross_createWindow(int width,int height, std::string title, std::string crea
         }
 
         }
+		return winMain_returnValue;
         #endif
         #if IsLINUX
         int argC = 0;
@@ -953,7 +939,7 @@ int cross_createWindow(int width,int height, std::string title, std::string crea
         GtkWidget *_LinuxWindow, *_Box;
         windows[createWindowName] = std::make_pair(_LinuxWindow, _Box);
         std::pair<cross_window_type,cross_control_type> &windowVals = windows[createWindowName];
-   
+
         gtk_init(&argC,&argV);
         windowVals.first = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         windowVals.second = gtk_fixed_new();
@@ -968,6 +954,9 @@ int cross_createWindow(int width,int height, std::string title, std::string crea
         gtk_widget_show_all(windowVals.first);
         g_signal_connect(G_OBJECT(windowVals.first),"destroy",G_CALLBACK(gtk_main_quit), NULL);
         gtk_main();
+
+		// TODO: Add real status
+		return 0;
         #endif
 }
 #ifdef _WIN32
