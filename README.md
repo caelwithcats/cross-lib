@@ -11,18 +11,18 @@ sudo apt-get update && sudo apt-get -y install libgtk-3-dev mingw-w64 g++ gcc bu
 Clone the CrossLib repository by typing in your terminal
 ```shell-script
 git clone https://github.com/caelwithcats/cross-lib.git
-cd cross-lib/cross_apis_r
+cd cross-lib/src
 ```
-A newly created folder called `cross-lib` should be created
 
-Copy the the `cross.h` and `cross-features.h` files from the `cross_apis_r` folder into project. 
+### For existing projects
 To import CrossLib into your existing C++ project add this line to your C++ file
 
 ```c++
 #include <cross.h>
 ```
-And that's it you now have CrossLib installed in your C++ project.
+And that's it you now have CrossLib in your C++ project.
 CrossLib has a GUI framework called CrossGUI. This is what we will be using to create the hello world project. Create a new C++ file called `crossExample.cpp` and add the following code to it:
+---
 
 ```c++
 #include "cross.h"
