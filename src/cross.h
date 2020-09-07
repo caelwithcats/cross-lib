@@ -592,7 +592,7 @@ void cross_createButton(int x, int y, int width, int height, std::string text, s
     #endif
 }
 void cross_createCheckbox(int x, int y, int width, int height, std::string text, std::string controlName, std::string windowName){
-    #if IsWIN 
+    #if IsWIN
         std::pair<cross_control_type,int> &controlVals = controls[controlName];
         controlVals.first = CreateWindowW(L"button",std::wstring(text.begin(), text.end()).c_str(),WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | BS_CHECKBOX, x, y,width,height,windows[windowName],NULL,NULL,NULL);
     #endif
@@ -697,7 +697,7 @@ crossStd::point3d getWindowPosition(std::string windowName){
     //int z = 0;
     RECT rectangle;
     GetWindowRect(windows[windowName], &rectangle);
-    
+
     crossStd::point3d resultValue;
     resultValue.x = rectangle.left;
     resultValue.y = rectangle.top;
@@ -706,7 +706,7 @@ crossStd::point3d getWindowPosition(std::string windowName){
     #endif
     #if IsLINUX
     // https://developer.gnome.org/gtk3/stable/GtkWindow.html#gtk-window-get-size
-    
+
     std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
     int windowX,windowY,windowZ;
     gtk_window_get_position(GTK_WINDOW(windowVals.first),&windowX,&windowY);
@@ -729,7 +729,7 @@ crossStd::point2d getControlPosition(std::string controlName){
     resultValue.y = rectangle.top;
     return resultValue;
     #endif
-    #if IsLINUX    
+    #if IsLINUX
     GValue controlX = G_VALUE_INIT,controlY = G_VALUE_INIT;
     g_object_get_property(G_OBJECT(controls[controlName]),"x", &controlX);
     g_object_get_property(G_OBJECT(controls[controlName]),"y", &controlY);
@@ -748,7 +748,7 @@ int getWindowWidth(std::string windowName){
     #endif
     #if IsLINUX
     // https://developer.gnome.org/gtk3/stable/GtkWindow.html#gtk-window-get-size
-    
+
     std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
     int windowW,windowH;
     gtk_window_get_size(GTK_WINDOW(windowVals.first),&windowW,&windowH);
@@ -763,7 +763,7 @@ int getWindowHeight(std::string windowName){
     #endif
     #if IsLINUX
     // https://developer.gnome.org/gtk3/stable/GtkWindow.html#gtk-window-get-size
-    
+
     std::pair<cross_window_type,cross_control_type> &windowVals = windows[windowName];
     int windowW,windowH;
     gtk_window_get_size(GTK_WINDOW(windowVals.first),&windowW,&windowH);
@@ -814,7 +814,7 @@ int getControlWidth(std::string controlName){
 }
 
 bool isWindowFocused(std::string windowName){
-    
+
     #if IsWIN
     std::cout << GetForegroundWindow() <<  std::endl;
     // BUG: GetForegroundWindow function will only return the window HWND if it is a Windows 
@@ -888,49 +888,18 @@ int cross_createWindow(int width,int height, std::string title, std::string crea
             #endif
             winMain_returnValue = -1;
         }else{
-        windows[createWindowName] = CreateWindowW(std::wstring(createWindowName.begin(), createWindowName.end()).c_str(),std::wstring(title.begin(), title.end()).c_str(),WS_OVERLAPPEDWINDOW | WS_VISIBLE,CW_USEDEFAULT,CW_USEDEFAULT,width,height,NULL,NULL,NULL,NULL);
-        MSG msg = {0};
-        cross_setupcode();
+        	windows[createWindowName] = CreateWindowW(std::wstring(createWindowName.begin(), createWindowName.end()).c_str(),std::wstring(title.begin(), title.end()).c_str(),WS_OVERLAPPEDWINDOW | WS_VISIBLE,CW_USEDEFAULT,CW_USEDEFAULT,width,height,NULL,NULL,NULL,NULL);
+        	MSG msg = {0};
+        	cross_setupcode();
 
-        while(GetMessage(&msg, NULL, WM_INPUT, WM_INPUT)){
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-            int message = win_wp;
-            int currentmsg;
-            //std::pair<cross_control_type,int> &controlVals = controls[controlName];
-            std::map<std::string, std::pair<cross_control_type, int>>::iterator it = controls.begin();
-            while(it != controls.end()){
-                crossStd::point2d CursorPos = getCursorPositionOnMonitor();
-                crossStd::point3d WinPos = getWindowPosition(createWindowName);
-                int winHeight = getWindowHeight(createWindowName);
-                int winWidth = getWindowWidth(createWindowName);
-                crossStd::point2d MousePosWinRelative;
-                MousePosWinRelative.x = CursorPos.x - WinPos.x;
-                MousePosWinRelative.y = CursorPos.x - WinPos.x;
-                //std::cout << "MousePosWinRelative.x = " << MousePosWinRelative.x << " & MousePosWinRelative.y = " << MousePosWinRelative.y << " & id = " << it->first << std::endl;
-                if(MousePosWinRelative.x >= 0 || MousePosWinRelative.y >= 0){
-                    crossStd::point2d controlPosition = getControlPosition(it->first);
-                    int controlWidth = getControlWidth(it->first);
-                    int controlHeight = getControlHeight(it->first);
-                    if(MousePosWinRelative.x <= controlPosition.x && MousePosWinRelative.x <= controlWidth){
-                        //if(controlPosition.y <= MousePosWinRelative.y && MousePosWinRelative.y <= controlHeight){
-                            // Hover event has occured
-                            crossStd::crossEvent event;
-                            event.from = it->first;
-                            event.typeOfEvent = "hover";
-                            if(cross_repeatcode != nullptr){
-                            cross_repeatcode(event);
-                            }
-                            //break;
-                        //}
-                    }
-                    
-                }
-                it++;
-            }
-        }
-
-        }
+        	while(GetMessage(&msg, NULL, 0, 0))
+			{
+            	TranslateMessage(&msg);
+            	DispatchMessage(&msg);
+            	int message = win_wp;
+            	int currentmsg;
+			}
+		}
 		return winMain_returnValue;
         #endif
         #if IsLINUX
