@@ -22,6 +22,7 @@ To import CrossLib into your existing C++ project add this line to your C++ file
 ```
 And that's it you now have CrossLib in your C++ project.
 CrossLib has a GUI framework called CrossGUI. This is what we will be using to create the hello world project. Create a new C++ file called `crossExample.cpp` and add the following code to it:
+
 ---
 
 ```c++
